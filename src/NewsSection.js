@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import useFetch from './useFetch';
 
 const NewsSection = () => {
-  const { data: newsData, isPending, error } = useFetch('http://localhost:3000/news');
+  const { data: newsData, isPending, error } = useFetch('https://news-crawler-ai-backend.herokuapp.com/news');
 
   const [currentPage, setCurrentPage] = useState(1);
   const newsPerPage = 10;
