@@ -1,23 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const VistorNumber = () => {
-  let visits = localStorage.getItem("visits");
-  if (!visits) {
-    visits = 1;
-  } else {
-    visits = Number(visits) + 1;
+  const [shouldSendRequest, setShouldSendRequest] = useState(false);
+  let visits = Cookies.get("visits");
+  const visited = Cookies.get("visited");
+
+  if (!visited) {
+    Cookies.set("visited", "true");
+    if (!visits) {
+      visits = 1;
+    } else {
+      visits = Number(visits) + 1;
+    }
+    Cookies.set("visits", visits);
+    setShouldSendRequest(true);
   }
-  localStorage.setItem("visits", visits);
 
   useEffect(() => {
-    fetch("https://news-crawler-ai-backend.herokuapp.com/visits", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ count: visits }),
-    });
-  }, [visits]);
+    if (shouldSendRequest) {
+      fetch("https://news-crawler-ai-backend.herokuapp.com/visits", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ count: visits }),
+      });
+    }
+  }, [visits, shouldSendRequest]);
 
   return (
     <div>
