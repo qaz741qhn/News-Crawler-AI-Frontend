@@ -1,33 +1,22 @@
-import React, { useEffect, useState } from "react";
-import Cookies from "js-cookie";
+import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 
-const VistorNumber = () => {
-  const [shouldSendRequest, setShouldSendRequest] = useState(false);
-  let visits = Cookies.get("visits");
-  const visited = Cookies.get("visited");
-
-  if (!visited) {
-    Cookies.set("visited", "true");
-    if (!visits) {
-      visits = 1;
-    } else {
-      visits = Number(visits) + 1;
-    }
-    Cookies.set("visits", visits);
-    setShouldSendRequest(true);
-  }
+const VisitorNumber = () => {
+  const [visits, setVisits] = useState(0);
 
   useEffect(() => {
-    if (shouldSendRequest) {
-      fetch("https://news-crawler-ai-backend.herokuapp.com/visits", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ count: visits }),
-      });
+    const visited = Cookies.get('visited');
+    if (!visited) {
+      Cookies.set('visited', 'true', { expires: 365 });
+      fetch('https://news-crawler-ai-backend.herokuapp.com/visits', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+        .then(response => response.json())
+        .then(data => setVisits(data.count)) // Assumes the server responds with { count: newCount }
+        .catch(err => console.error(err));
     }
-  }, [visits, shouldSendRequest]);
+  }, []);
 
   return (
     <div>
@@ -36,4 +25,4 @@ const VistorNumber = () => {
   );
 };
 
-export default VistorNumber;
+export default VisitorNumber;
