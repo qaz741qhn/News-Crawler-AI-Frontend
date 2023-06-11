@@ -3,7 +3,9 @@ import { fetchAPI } from "./useFetch";
 
 const NewsCard = ({ news }) => {
   const [isTranslated, setIsTranslated] = useState(false);
+  const [isTranlating, setIsTranslating] = useState(false);
   const [translatedSummary, setTranslatedSummary] = useState("");
+  const [summaryClass, setSummaryClass] = useState('en');
 
   const formatDate = (date) => {
     const dateObj = new Date(date);
@@ -14,6 +16,7 @@ const NewsCard = ({ news }) => {
 
   const handleTranslate = async (event, apiURL) => {
     event.preventDefault();
+    setIsTranslating(true);
 
     if (news.translation) {
       setTranslatedSummary(news.translation);
@@ -27,14 +30,17 @@ const NewsCard = ({ news }) => {
     }
 
     setIsTranslated(!isTranslated);
+    setIsTranslating(false);
+    setSummaryClass(summaryClass === 'en' ? 'jp' : 'en');
   };
 
   return (
-    <div key={news.id}>
+    <div className="news-card" key={news.id}>
       <h3>{news.title}</h3>
       <p>{formatDate(news.date)}</p>
-      <p>{isTranslated ? translatedSummary : news.summary}</p>
-      <button onClick={(event) => handleTranslate(event, "https://multi-api.herokuapp.com")}>
+      <div className={summaryClass}>{isTranslated ? translatedSummary : news.summary}</div>
+      <button onClick={(event) => handleTranslate(event, "https://multi-api.herokuapp.com")} disabled={isTranlating}>
+        {isTranlating && <span>Translating to </span>}
         {isTranslated ? "English" : "日本語"}
       </button>
       <p>Source: <a href={news.source} target="_blank" rel="noopener noreferrer">{news.source}</a></p>

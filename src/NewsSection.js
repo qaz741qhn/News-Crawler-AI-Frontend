@@ -32,7 +32,7 @@ const NewsSection = () => {
         <NewsCard key={news.id} news={news} />
       ))}
 
-      <div>
+      <div className='page-number-button'>
         {pageNumbers.map(number => (
           <button key={number} onClick={() => paginate(number)}>
             {number}
