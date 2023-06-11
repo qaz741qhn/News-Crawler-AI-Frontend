@@ -34,7 +34,7 @@ const NewsCard = ({ news }) => {
       <h3>{news.title}</h3>
       <p>{formatDate(news.date)}</p>
       <p>{isTranslated ? translatedSummary : news.summary}</p>
-      <button onClick={(event) => handleTranslate(event, "http://localhost:3000")}>
+      <button onClick={(event) => handleTranslate(event, "https://multi-api.herokuapp.com")}>
         {isTranslated ? "English" : "日本語"}
       </button>
       <p>Source: <a href={news.source} target="_blank" rel="noopener noreferrer">{news.source}</a></p>
