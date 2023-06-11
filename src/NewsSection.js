@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import useFetch from './useFetch';
+import {useFetch} from './useFetch';
+import NewsCard from './NewsCard';
 
 const NewsSection = () => {
   const { data: newsData, isPending, error } = useFetch('https://multi-api.herokuapp.com/news');
-
+  
   const [currentPage, setCurrentPage] = useState(1);
   const newsPerPage = 10;
 
@@ -22,25 +23,13 @@ const NewsSection = () => {
     pageNumbers.push(i);
   }
 
-  const formatDate = (date) => {
-    const dateObj = new Date(date);
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = dateObj.toLocaleDateString("en-US", options);
-    return formattedDate;
-  }
-
   return (
     <div className='news-card'>
       <h2>Latest News</h2>
       { error && <div>{ error }</div> }
       { isPending && <div>Loading...</div> }
       { currentNews && currentNews.map((news) => (
-        <div key={news.id}>
-          <h3>{ news.title }</h3>
-          <p>{ formatDate(news.date) }</p>
-          <p>{ news.summary }</p>
-          <p>Source: <a href={news.source} target="_blank" rel="noopener noreferrer">{news.source}</a></p>
-        </div>
+        <NewsCard news={news} />
       ))}
 
       <div>
