@@ -29,7 +29,7 @@ const NewsSection = () => {
       { error && <div>{ error }</div> }
       { isPending && <div>Loading...</div> }
       { currentNews && currentNews.map((news) => (
-        <NewsCard news={news} />
+        <NewsCard key={news.id} news={news} />
       ))}
 
       <div>

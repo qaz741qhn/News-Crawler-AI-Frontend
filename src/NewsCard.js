@@ -19,7 +19,7 @@ const NewsCard = ({ news }) => {
       setTranslatedSummary(news.translation);
     } else {
       const body = {
-        prompt: `専門的に以下の英語のニュース「${news.content}」を日本の読者に適した、専門的な日本語のニュース要約に翻訳してください。約100字程度でお願いします。`,
+        prompt: `以下の英語のニュース「${news.content}」を日本の読者に適した、ですます形ではなく、普通形で80字以下、専門的、かつ簡潔的な日本語の新聞要約に翻訳してください。一般的な新聞の書き方でお願いします。`,
       };
 
       const data = await fetchAPI(`${apiURL}/news/${news.id}/translate`, body);
