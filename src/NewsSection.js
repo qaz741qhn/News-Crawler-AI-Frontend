@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {useFetch} from './useFetch';
 import NewsCard from './NewsCard';
 
-const NewsSection = () => {
+const NewsSection = ({apiURL}) => {
   const { data: newsData, isPending, error } = useFetch('https://multi-api.herokuapp.com/news');
   
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,7 +29,7 @@ const NewsSection = () => {
       { error && <div>{ error }</div> }
       { isPending && <div>Loading...</div> }
       { currentNews && currentNews.map((news) => (
-        <NewsCard key={news.id} news={news} />
+        <NewsCard key={news.id} news={news} apiURL={apiURL} />
       ))}
 
       <div className='page-number-button'>

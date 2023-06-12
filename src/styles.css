@@ -105,7 +105,11 @@ header {
 
 @media (max-width: 768px) {
   .news-card {
-    width: 95%;
+    width: 85%;
+  }
+
+  .news-card button {
+    margin: 0;
   }
 }
 

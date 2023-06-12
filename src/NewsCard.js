@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { fetchAPI } from "./useFetch";
 
-const NewsCard = ({ news }) => {
+const NewsCard = ({ news, apiURL }) => {
   const [isTranslated, setIsTranslated] = useState(false);
   const [isTranlating, setIsTranslating] = useState(false);
   const [translatedSummary, setTranslatedSummary] = useState("");
@@ -22,7 +22,7 @@ const NewsCard = ({ news }) => {
       setTranslatedSummary(news.translation);
     } else {
       const body = {
-        prompt: `以下の英語のニュース「${news.content}」を日本の読者に適した、ですます形ではなく、普通形で80字以下、専門的、かつ簡潔的な日本語の新聞要約に翻訳してください。一般的な新聞の書き方でお願いします。`,
+        prompt: `以下の英語の新聞要約「${news.summary}」を日本の読者に適した、「ですます形」ではなく、普通形で専門的、かつ簡潔的な日本語の新聞要約に翻訳してください。一般的な新聞の書き方でお願いします。`,
       };
 
       const data = await fetchAPI(`${apiURL}/news/${news.id}/translate`, body);
@@ -39,7 +39,7 @@ const NewsCard = ({ news }) => {
       <h3>{news.title}</h3>
       <p>{formatDate(news.date)}</p>
       <div className={summaryClass}>{isTranslated ? translatedSummary : news.summary}</div>
-      <button onClick={(event) => handleTranslate(event, "https://multi-api.herokuapp.com")} disabled={isTranlating}>
+      <button onClick={(event) => handleTranslate(event, apiURL)} disabled={isTranlating}>
         {isTranlating && <span>Translating to </span>}
         {isTranslated ? "English" : "日本語"}
       </button>
